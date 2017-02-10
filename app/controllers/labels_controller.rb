@@ -1,32 +1,145 @@
 class LabelsController < ApplicationController
-  before_action :set_label, only: [:show]
+  before_action :set_label, only: [:show, :albums, :artists]
 
   # GET /labels
   def index
-    @labels = Label.all
+		begin
+			status = 200
+			@labels = Label.page(params[:page])
 
-    render json: @labels
+			@labels_response = @labels.map do |label|
+				{
+					uuid: label.uuid,
+					name: label.name
+				}
+			end
+
+			@response = {
+				meta: {
+					code: status,
+					pagination: gen_pagination(payload: @labels, page: params[:page])
+				},
+				data: {
+					labels: @labels_response
+				}
+			}
+		rescue Exception => e
+			status = 500
+			@response = {
+				meta: {
+					code: status,
+					error_message: e
+				}
+			}
+		end
+
+    render json: @response, status: status
   end
 
   # GET /labels/:label-slug
   def show
-    render json: @label
+		begin
+			status = 200
+
+			@response = {
+				meta: {
+					code: status
+				},
+				data: {
+					label: {
+						uuid: @label.uuid,
+						name: @label.name
+					}
+				}
+			}
+		rescue Exception => e
+			status = 500
+			@response = {
+				meta: {
+					code: status,
+					error_message: e
+				}
+			}
+		end
+
+    render json: @response, status: status
   end
 
   # GET /labels/:label-slug/albums
   def albums
-    render json: @label
+		begin
+			status = 200
+			@albums = @label.albums.page(params[:page])
+
+			@albums_response = @albums.map do |album|
+				{
+					uuid: album.uuid,
+					name: album.name,
+					catalog: album.catalog
+				}
+			end
+
+			@response = {
+				meta: {
+					code: status,
+					pagination: gen_pagination(payload: @albums, page: params[:page])
+				},
+				data: {
+					albums: @albums_response
+				}
+			}
+		rescue Exception => e
+			status = 500
+			@response = {
+				meta: {
+					code: status,
+					error_message: e
+				}
+			}
+		end
+
+    render json: @response, status: status
   end
 
   # GET /labels/:label-slug/artists
   def artists
-    render json: @label
+		begin
+			status = 200
+			@artists = @label.artists.page(params[:page])
+
+			@artists_response = @artists.map do |artist|
+				{
+					uuid: artist.uuid,
+					name: artist.name
+				}
+			end
+
+			@response = {
+				meta: {
+					code: status,
+					pagination: gen_pagination(payload: @artists, page: params[:page])
+				},
+				data: {
+					artists: @artists_response
+				}
+			}
+		rescue Exception => e
+			status = 500
+			@response = {
+				meta: {
+					code: status,
+					error_message: e
+				}
+			}
+		end
+
+    render json: @response, status: status
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_label
-      @label = Label.find(params[:id])
+      @label = Label.find_by_uuid(params[:uuid])
     end
 
     # Only allow a trusted parameter "white list" through.

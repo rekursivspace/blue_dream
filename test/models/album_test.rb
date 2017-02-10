@@ -8,6 +8,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  artist_id  :integer
+#  uuid       :string
 #
 
 require 'test_helper'
