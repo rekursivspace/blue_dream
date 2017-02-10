@@ -13,4 +13,5 @@
 class Artist < ApplicationRecord
 	belongs_to :label
 	has_many :albums
+	has_many :tracks, through: :albums
 end

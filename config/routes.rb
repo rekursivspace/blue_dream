@@ -8,29 +8,29 @@ Rails.application.routes.draw do
 		end
 	end
 
-	get 'artists' => 'artist#index'
+	get 'artists' => 'artists#index'
 	scope 'artists' do
-		get ':uuid' => 'artist#show'
+		get ':uuid' => 'artists#show'
 		scope ':uuid' do
-			get 'albums' => 'artist#albums'
-			get 'tracks' => 'artist#tracks'
+			get 'albums' => 'artists#albums'
+			get 'tracks' => 'artists#tracks'
 		end
 	end
 	
-	get 'albums' => 'album#index'
+	get 'albums' => 'albums#index'
 	scope 'albums' do
-		get ':uuid' => 'album#show'
+		get ':uuid' => 'albums#show'
 		scope ':uuid' do
-			get 'artist' => 'album#artist'
+			get 'artist' => 'albums#artist'
 		end
 	end
 
-	get 'tracks' => 'track#index'
+	get 'tracks' => 'tracks#index'
 	scope 'tracks' do
-		get ':uuid' => 'track#show'
+		get ':uuid' => 'tracks#show'
 		scope ':uuid' do
-			get 'album' => 'track#album'
-			get 'artist' => 'track#artist'
+			get 'album' => 'tracks#album'
+			get 'artist' => 'tracks#artist'
 		end
 	end
 end

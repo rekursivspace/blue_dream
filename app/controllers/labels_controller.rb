@@ -36,7 +36,7 @@ class LabelsController < ApplicationController
     render json: @response, status: status
   end
 
-  # GET /labels/:label-slug
+  # GET /labels/:uuid
   def show
 		begin
 			status = 200
@@ -65,7 +65,7 @@ class LabelsController < ApplicationController
     render json: @response, status: status
   end
 
-  # GET /labels/:label-slug/albums
+  # GET /labels/:uuid/albums
   def albums
 		begin
 			status = 200
@@ -101,7 +101,7 @@ class LabelsController < ApplicationController
     render json: @response, status: status
   end
 
-  # GET /labels/:label-slug/artists
+  # GET /labels/:uuid/artists
   def artists
 		begin
 			status = 200
